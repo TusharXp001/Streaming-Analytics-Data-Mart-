@@ -20,6 +20,13 @@ FROM (
 FILE_FORMAT = (TYPE = CSV SKIP_HEADER = 1)
 ON_ERROR = CONTINUE;
 
+
+Insert into load_status(table_name,file_name,Rows_loaded,Rows_failed)
+SELECT 
+'raw_users',$1,$4,$6
+ FROM TABLE(RESULT_SCAN(LAST_QUERY_ID())) t;
+
+
 COPY INTO raw_movies (movie_id, title, genre, language, release_year, load_timestamp, file_name)
 FROM (
     SELECT
@@ -34,6 +41,12 @@ FROM (
 )
 FILE_FORMAT = (TYPE = CSV SKIP_HEADER = 1)
 ON_ERROR = CONTINUE;
+
+
+Insert into load_status(table_name,file_name,Rows_loaded,Rows_failed)
+SELECT 
+'raw_users',$1,$4,$6
+ FROM TABLE(RESULT_SCAN(LAST_QUERY_ID())) t;
 
 COPY INTO raw_watch_history (watch_id, user_id, movie_id, watch_date, watch_duration_minutes, device_type, load_timestamp, file_name)
 FROM (
@@ -50,6 +63,12 @@ FROM (
 )
 FILE_FORMAT = (TYPE = CSV SKIP_HEADER = 1)
 ON_ERROR = CONTINUE;
+
+
+Insert into load_status(table_name,file_name,Rows_loaded,Rows_failed)
+SELECT 
+'raw_users',$1,$4,$6
+ FROM TABLE(RESULT_SCAN(LAST_QUERY_ID())) t;
 
 COPY INTO raw_ratings (rating_id, user_id, movie_id, rating, rating_date, load_timestamp, file_name)
 FROM (
@@ -70,6 +89,12 @@ FILE_FORMAT = (
 )
 ON_ERROR = CONTINUE;
 
+
+Insert into load_status(table_name,file_name,Rows_loaded,Rows_failed)
+SELECT 
+'raw_users',$1,$4,$6
+ FROM TABLE(RESULT_SCAN(LAST_QUERY_ID())) t;
+
 RETURN  'Data Loaded Successfully';
   
 END;
@@ -81,9 +106,17 @@ Select * from raw_movies;
 Select * from raw_ratings;
 Select * from raw_users;
 Select * from raw_watch_history;
+Select * from load_status;
+
+
 
 truncate table raw_movies;
 truncate table raw_ratings;
 truncate table raw_users;
 truncate table raw_watch_history;
+truncate table load_status;
+
+
+
+
 
