@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: dim_users
+    description: "Dimension table for user attributes and engagement summary."
+    columns:
+      - name: USER_ID
+        description: "Primary key for the user dimension."
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_movies
+    description: "Dimension table containing movie details and performance stats."
+    columns:
+      - name: MOVIE_ID
+        description: "Primary key for the movie dimension."
+        tests:
+          - not_null
+          - unique
+
+  - name: fact_watch_history
+    description: "Fact table for user movie watch activity."
+    columns:
+      - name: WATCH_ID
+        description: "Unique identifier for each watch event."
+        tests:
+          - not_null
+          - unique
+
+  - name: fact_ratings
+    description: "Fact table for movie ratings provided by users."
+    columns:
+      - name: RATING_ID
+        description: "Unique identifier for each rating event."
+        tests:
+          - not_null
+          - unique
