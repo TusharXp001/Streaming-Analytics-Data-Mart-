@@ -1,0 +1,82 @@
+version: 2
+
+sources:
+  - name: RAW
+    database: STREAMING_DB
+    description: "Source tables containing the raw, ingested data for the movie analysis project."
+    tables:
+      - name: raw_users
+        description: "Raw table containing user demographic and registration data."
+        columns:
+          - name: USER_ID
+            description: "Unique identifier for each user."
+          - name: LOAD_TIMESTAMP
+            description: "Timestamp indicating when the data was ingested."
+
+      - name: raw_movies
+        description: "Raw table containing movie metadata (title, genre, release year, etc.)."
+        columns:
+          - name: MOVIE_ID
+            description: "Unique identifier for each movie."
+          - name: TITLE
+            description: "Title of the movie."
+
+      - name: raw_ratings
+        description: "Raw table of user ratings given to movies."
+        columns:
+          - name: RATING_ID
+            description: "Unique identifier for the rating event."
+          - name: USER_ID
+            description: "Foreign key linking to the raw_users table."
+          - name: MOVIE_ID
+            description: "Foreign key linking to the raw_movies table."
+
+      - name: raw_watch_history
+        description: "Raw table containing events for when a user watched a movie."
+        columns:
+          - name: WATCH_ID
+            description: "Unique identifier for the watch event."
+          - name: USER_ID
+            description: "Foreign key linking to the raw_users table."
+          - name: MOVIE_ID
+            description: "Foreign key linking to the raw_movies table."
+          - name: WATCH_DATE
+            description: "The date/time the watch event occurred."
+
+
+# ================================================================
+# ADD STAGING MODEL METADATA BELOW
+# ================================================================
+
+models:
+  - name: stg_users
+    description: "Cleans and transforms raw user data for downstream use."
+    columns:
+      - name: user_id
+        description: "Unique identifier for each user."
+      - name: signup_date
+        description: "Date when the user registered."
+
+  - name: stg_movies
+    description: "Cleans and standardizes movie metadata for analytics use."
+    columns:
+      - name: movie_id
+        description: "Unique identifier for each movie."
+      - name: title
+        description: "Movie title."
+
+  - name: stg_ratings
+    description: "Prepares user rating data for dimensional modeling."
+    columns:
+      - name: rating_id
+        description: "Unique identifier for each rating."
+      - name: rating
+        description: "User rating value (1–5)."
+
+  - name: stg_watch_history
+    description: "Prepares user watch history data for aggregation and trend analysis."
+    columns:
+      - name: watch_id
+        description: "Unique identifier for each watch event."
+      - name: watch_date
+        description: "Timestamp when the watch occurred."

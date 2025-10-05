@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: int_user_engagement
+    description: "Aggregated user-level engagement metrics derived from watch history and ratings."
+    columns:
+      - name: USER_ID
+        description: "User identifier."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_users')
+              field: USER_ID
+
+  - name: int_movie_performance
+    description: "Intermediate aggregation for movie performance metrics (ratings, watch counts, etc.)."
+    columns:
+      - name: MOVIE_ID
+        description: "Movie identifier."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_movies')
+              field: MOVIE_ID
